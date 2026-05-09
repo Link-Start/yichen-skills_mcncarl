@@ -2,12 +2,12 @@
 
 [English](./README.md) | 中文
 
-一个面向内容创作者的技能仓库，帮助你用 Claude Code / Codex 打通”沉淀知识 + 发布内容 + 微信数字资产 + 日报生成”的完整流程。
+一个面向内容创作者的技能仓库，帮助你用 Claude Code / Codex 打通”沉淀知识 + X 文章草稿上传 + 微信数字资产 + 日报生成”的完整流程。
 
 ## 这个仓库能做什么
 
 1. 把 Claude Code 对话沉淀为结构化 Obsidian 笔记（`summary`）
-2. 把 Obsidian/Markdown 内容发布到 X（`x-publisher`）
+2. 把 Obsidian/Markdown 长文上传为 X Articles 草稿（`x-article-draft-uploader`）
 3. 从微信聊天、朋友圈、收藏夹沉淀 AI 数字资产（`wechat-daily`）
 4. Mac 微信双开，第二个微信带蓝色图标（`mac-wechat-dual-open`）
 
@@ -21,12 +21,16 @@
   - 输出结构化笔记（背景、核心内容、解决方案、关键要点、相关）
   - 适合长期知识沉淀
 
-### 2) `x-publisher`
-聚焦”长文发布”的发布套件，包含：
-- `x-article-publisher`：发布长文到 X Articles
-- `scripts/`：Markdown 解析和剪贴板处理等通用工具
+### 2) `x-article-draft-uploader`
+把 Obsidian/Markdown 长文上传到 X Articles 草稿：
+- 第一张图片自动作为 X Article 封面
+- Markdown 转成 X 编辑器可识别的 rich text
+- 正文图片按原文位置插入
+- 使用独立 Playwright 浏览器，不抢占用户当前 Chrome
+- 通过临时导出的 cookies 复用 Chrome 登录态
+- 只保存草稿，不点击最终 `发布`
 
-专门针对 Windows 体验做了优化，路径兼容性强，上传推特文章有极高正确率。
+完整说明见 [x-article-draft-uploader/README.md](./x-article-draft-uploader/README.md)。
 
 ### 3) `mac-wechat-dual-open`
 Mac 微信双开——无需第三方工具，一条命令搞定：
@@ -57,15 +61,14 @@ Mac 微信双开——无需第三方工具，一条命令搞定：
 yichen-skills/
 ├─ summary/
 │  └─ SKILL.md
-├─ x-publisher/
-│  ├─ cookies.template.json
-│  ├─ scripts/
-│  ├─ x-article-publisher/
-│  │  ├─ cookies.template.json
-│  │  ├─ SKILL.md
-│  │  ├─ scripts/
-│  │  └─ references/
-│  └─ （仅保留长文发布能力）
+├─ x-article-draft-uploader/
+│  ├─ SKILL.md
+│  ├─ README.md
+│  ├─ agents/
+│  └─ scripts/
+│     ├─ export_x_cookies_from_chrome.py
+│     ├─ parse_markdown.py
+│     └─ upload_markdown_to_x_article.py
 ├─ wechat-daily/
 │  ├─ SKILL.md
 │  ├─ README.md
@@ -89,11 +92,12 @@ yichen-skills/
 ## 环境要求
 
 - Claude Code / Codex CLI（支持加载本地 skills）
-- Playwright MCP（`x-publisher` 必需）
+- Python Playwright（`x-article-draft-uploader` 必需）
 - Python 3.9+
 - 依赖：
-  - Windows: `pip install Pillow pywin32 clip-util`
-  - macOS: `pip install Pillow pyobjc-framework-Cocoa`
+  - X 文章草稿：`pip install playwright pycryptodome && python3 -m playwright install chromium`
+  - 微信日报：`pip install pycryptodome zstandard`
+  - 微信双开：`pip install Pillow`
 
 ## 安装方式
 
@@ -105,7 +109,7 @@ yichen-skills/
 
 建议保持目录名不变：
 - `summary`
-- `x-publisher`
+- `x-article-draft-uploader`
 - `wechat-daily`
 - `mac-wechat-dual-open`
 
@@ -117,12 +121,13 @@ yichen-skills/
 2. 新开会话后输入 `/summary`
 3. 确认输出写入 Obsidian 目录（示例路径通常是 `<OBSIDIAN_VAULT>/...`）
 
-### B）启用 `x-publisher`
+### B）启用 `x-article-draft-uploader`
 
-1. 先配置 Cookie（见下节）
-2. 确认 Playwright MCP 已连接
-3. 按场景调用：
-   - 发布长文：触发 `x-article-publisher`
+1. 安装 Python Playwright：`pip3 install playwright pycryptodome && python3 -m playwright install chromium`
+2. 确认 Chrome 已经登录 X
+3. 直接说“把这篇 Markdown 上传到 X Articles 草稿”，或手动运行脚本
+4. Skill 会新建干净草稿，第一张图作为封面，正文图片按原文位置插入
+5. 详细命令见 [x-article-draft-uploader/README.md](./x-article-draft-uploader/README.md)
 
 ### C）启用 `mac-wechat-dual-open`
 
@@ -140,15 +145,21 @@ yichen-skills/
 5. 后续使用自动生成对应的日报、报告或草案
 6. 详细说明见 [wechat-daily/README.md](./wechat-daily/README.md)
 
-## Cookie 配置（必需）
+## X Cookie 处理
 
-本仓库不包含真实凭据，只提供模板。
+本仓库不包含真实凭据，也不再提供需要手动填写的 cookie 模板。
 
-1. 复制模板：
-   - `x-publisher/cookies.template.json` -> `x-publisher/cookies.json`
-   - `x-publisher/x-article-publisher/cookies.template.json` -> `x-publisher/x-article-publisher/cookies.json`
-2. 填入你自己的 `auth_token` 和 `ct0`
-3. 不要把真实 `cookies.json` 提交到 Git 仓库
+`x-article-draft-uploader` 会从本机 Chrome 临时导出 X cookies 到 Playwright 可用的 JSON 文件：
+
+```bash
+python3 ~/.codex/skills/x-article-draft-uploader/scripts/export_x_cookies_from_chrome.py --output /tmp/x_current_cookies.json
+```
+
+这个临时文件是敏感文件，用完可以删除：
+
+```bash
+rm -f /tmp/x_current_cookies.json
+```
 
 `.gitignore` 已默认忽略 `**/cookies.json`。
 
@@ -167,9 +178,10 @@ yichen-skills/
 - 重启会话再试
 - 检查 `SKILL.md` 里的 frontmatter（`name` / `description`）
 
-### 为什么发布到 X 失败？
-- 优先检查 Cookie 是否过期
-- 检查 Playwright MCP 是否连通
+### 为什么上传 X Articles 草稿失败？
+- 检查 Chrome 是否仍然登录 X
+- 重新导出临时 cookies
+- 检查 Python Playwright 是否安装
 - 检查 Markdown/图片路径是否存在
 
 ### Obsidian 路径可以改吗？
@@ -186,13 +198,13 @@ yichen-skills/
 - `LICENSE`
 - `.gitignore`
 - `THIRD_PARTY_NOTICES.md`
-- 两个 `cookies.template.json`
+- `x-article-draft-uploader/README.md`
 
 不要把本仓库重新打包或重新发布为公开 Skill 套件。并明确提醒用户不要上传真实凭据或隐私数据。
 
 ## 致谢
 
-本仓库的 X 发布流程与工程实践，参考了以下项目：
+本仓库的 X Articles 草稿上传流程和 Markdown 解析思路，参考了以下项目：
 
 - `wshuyi/x-article-publisher-skill`
   - 仓库：<https://github.com/wshuyi/x-article-publisher-skill>

@@ -1,6 +1,6 @@
 ﻿# THIRD_PARTY_NOTICES
 
-Last updated: 2026-04-28
+Last updated: 2026-05-09
 
 This repository references and adapts ideas/workflows from external projects.
 
@@ -11,8 +11,8 @@ This repository references and adapts ideas/workflows from external projects.
 - License: MIT (copyright notice: wshuyi)
 - Local copy of license: `licenses/wshuyi-x-article-publisher-skill-LICENSE.txt`
 - Usage in this repo:
-  - Workflow and publishing approach references
-  - Adapted skill instructions and script-level implementation ideas
+  - Workflow and X Articles editor automation references
+  - Adapted Markdown parsing and rich-text conversion ideas now used by `x-article-draft-uploader`
 
 ## 2) JimLiu/baoyu-skills
 
@@ -45,7 +45,7 @@ This repository references and adapts ideas/workflows from external projects.
 - The upstream projects listed above retain their original licenses and copyrights.
 - Upstream licenses and notices should be preserved when redistributing derived works.
 - `wechat-daily` is an independent implementation that adapts specific technical approaches from `wx-favorites-report`. It does not contain any code directly copied from the upstream project.
-- `x-publisher` references workflow and implementation ideas from `wshuyi/x-article-publisher-skill`; local cookie templates contain placeholders only, not real credentials.
+- `x-article-draft-uploader` references workflow and Markdown parsing ideas from `wshuyi/x-article-publisher-skill`; it stores no real credentials and writes cookies only to temporary runtime files.
 - `summary` and the broader skill packaging conventions reference public Claude skill community practices, including JimLiu/baoyu-skills.
 - `mac-wechat-dual-open` references public X/Twitter discussion and implements the copy + bundle-id + ad-hoc signing workflow locally.
 - Do not remove this file when forking for personal study. It is the attribution record for borrowed ideas, workflows, and license notices.
