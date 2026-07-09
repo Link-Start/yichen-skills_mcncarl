@@ -67,5 +67,6 @@ Known URL downloads write:
 
 - Do not operate WeChat UI from the agent.
 - Do not bypass login, paywalls, deleted articles, private content, or platform permission checks.
+- Downloaded article content belongs to the original authors or rights holders; do not republish or redistribute without permission.
 - Do not guarantee read/comment metrics without fresh user-owned credentials.
 - Do not leave system proxy settings changed after a credential-capture workflow.

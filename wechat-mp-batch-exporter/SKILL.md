@@ -11,6 +11,8 @@ Never operate the user's WeChat UI. Do not publish, delete, mass-send, follow, u
 
 Never print raw cookies, auth-key, token, pass_ticket, key, uin, credentials JSON, or QR login secrets in chat or saved reports.
 
+Downloaded article content belongs to the original authors or rights holders. Use exports only within the user's lawful/private-use scope unless the user confirms they have permission to republish or redistribute.
+
 ## First Step
 
 Run the local doctor before choosing a workflow:
