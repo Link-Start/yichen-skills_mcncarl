@@ -135,7 +135,8 @@ Only install global Codex hooks or a macOS LaunchAgent after the user has asked 
 
 - Stop is turn-scoped in both hosts, so the memory hook must be gated and quiet when there are no pending memory changes.
 - A shared setup may run full closeout from Stop only after the Agent has written formal memory and only when dirty Markdown or unobserved Git history exists.
-- Claude Stop should block completion when closeout returns an error or unresolved merge; SessionEnd can be a non-blocking fallback.
+- Both hosts should block normal completion when closeout fails, using their native protocols: Claude returns `decision: block`; Codex exits with code `2` and writes a continuation prompt to stderr. Claude SessionEnd can be a non-blocking fallback; Codex currently has no direct equivalent.
+- Keep the outer Stop hook timeout slightly above the closeout timeout. For a 300-second closeout, use at least 320 seconds outside.
 - Keep one global closeout lock, one Git baseline, one audit scheduler, one SQLite database, and one Zvec index across both hosts.
 - Let `codex_memory_audit_autorun.py --min-interval-days 7` decide whether audit is due.
 - The weekly LaunchAgent must not use `--force`; otherwise closeout, hook, and launchd can run duplicate audits inside the same seven-day window.
