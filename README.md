@@ -15,7 +15,7 @@ A skill collection for creators who want to streamline writing, X Articles draft
 7. Diagnose benchmark video transcripts (`yichen-video-content`)
 8. Run verified research through the official ChatGPT web page (`chatgpt-web-research`)
 9. Hand off rough cuts to Jianying/CapCut for final editing (`jianying-editor`)
-10. Install and maintain a Markdown/Obsidian-first Codex memory system (`codex-memory`)
+10. Install and maintain a Markdown/Obsidian-first Agent Memory Vault system (`agent-memory`)
 11. Batch-export WeChat Official Account article history, original-article lists, bodies, and optional read/comment metrics (`wechat-mp-batch-exporter`)
 
 ## Included Skills
@@ -102,14 +102,14 @@ Guide Jianying/CapCut desktop finishing:
 - Handles timeline placement, subtitles, visual polishing, and export notes
 - Leaves automatic rough-cut logic to `volc-asr`
 
-### 11) `codex-memory`
-Install and maintain the public Codex Memory system:
+### 11) `agent-memory`
+Install and maintain the public Agent Memory Vault system:
 - Creates a local Markdown/Obsidian-first memory vault from the public template
 - Uses Markdown as the source of truth and SQLite/FTS as the fast index
 - Supports optional Zvec semantic retrieval for fuzzy "meaning-based" recall
 - Guides prewrite reconcile, closeout, audit, and privacy-safe template updates
-- Typical triggers: "install Codex memory", "set up memory vault", "run memory closeout", "audit my Codex memory"
-- Template repo: [mcncarl/codex-memory](https://github.com/mcncarl/codex-memory)
+- Typical triggers: "install Agent Memory Vault", "set up memory vault", "run memory closeout", "audit my Agent Memory Vault"
+- Template repo: [mcncarl/agent-memory-vault](https://github.com/mcncarl/agent-memory-vault)
 
 ### 12) `wechat-mp-batch-exporter`
 Batch-export WeChat Official Account articles:
@@ -174,7 +174,7 @@ yichen-skills/
 │  └─ agents/
 ├─ jianying-editor/
 │  └─ SKILL.md
-├─ codex-memory/
+├─ agent-memory/
 │  ├─ SKILL.md
 │  └─ agents/
 ├─ wechat-mp-batch-exporter/
@@ -224,7 +224,7 @@ Keep directory names unchanged:
 - `yichen-video-content`
 - `chatgpt-web-research`
 - `jianying-editor`
-- `codex-memory`
+- `agent-memory`
 - `wechat-mp-batch-exporter`
 
 ## Quick Start (3 Minutes)
@@ -274,11 +274,11 @@ Keep directory names unchanged:
 3. Ask for official-site research, for example: "Use ChatGPT Web to research Anthropic and save a Markdown report"
 4. The skill waits for a complete answer, verifies the marker, and saves raw/readable Markdown reports
 
-### G) Enable `codex-memory`
+### G) Enable `agent-memory`
 
-1. Make sure `codex-memory/SKILL.md` is available in your loaded skills path
-2. Ask Codex to "install Codex Memory" or "set up a local Codex memory vault"
-3. The skill will use [mcncarl/codex-memory](https://github.com/mcncarl/codex-memory) to create a private local vault
+1. Make sure `agent-memory/SKILL.md` is available in your loaded skills path
+2. Ask Codex to "install Agent Memory Vault" or "set up a local Agent Memory Vault vault"
+3. The skill will use [mcncarl/agent-memory-vault](https://github.com/mcncarl/agent-memory-vault) to create a private local vault
 4. After setup, use `codex_memory_search.py`, `codex_memory_closeout.py`, and `codex_memory_audit.py` for search, task-end cleanup, and periodic review
 
 ### H) Enable `wechat-mp-batch-exporter`
