@@ -69,7 +69,7 @@ memoryctl --actor claude prewrite "summary of the memory to write"
 memoryctl --actor claude closeout
 ```
 
-The original script names remain supported for compatibility.
+Use only `memoryctl` and the `agent_memory_*` entrypoints. Compatibility wrappers are intentionally not installed; update every Hook, scheduler, shell alias, and custom script before removing an older installation.
 
 Use the unified search entrypoint by default:
 
