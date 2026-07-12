@@ -137,7 +137,7 @@ python3 scripts/agent_memory_doctor.py
 
 Audit findings are prompts for review. Do not let audit directly rewrite Markdown facts unless the user asks for that update. Current-fact invariants can detect retired paths/scripts, wrong `agent_scope`, and stale fixed metrics in active summaries.
 
-`doctor` is read-only by default. Use `--repair-derived` only when the user wants SQLite/FTS and Zvec rebuilt; it must never rewrite Markdown facts.
+`doctor` is read-only by default. It also checks for stale session claims, an aging unpushed memory history, and a semantic virtual environment whose base Python disappeared. Use `--repair-derived` only when the user wants SQLite/FTS and Zvec rebuilt; it must never rewrite Markdown facts.
 
 ## Optional Semantic Retrieval
 
@@ -198,3 +198,6 @@ rg -n "/Users/|sk-[A-Za-z0-9]|token|secret|cookie|password|\\.sqlite|\\.db|zvec"
 - If Claude debug reports zero matching hooks after installation, check whether a provider switcher rewrote `~/.claude/settings.json`. Persist the hooks in that manager's common configuration and any live rollback copy, then restart it and verify the loaded matchers again.
 - If doctor reports `needs_review` or `mtime_fallback`, do not fabricate a verification date. Classify structural/snapshot documents explicitly, use document dates only as provenance, and add `verified_at` only after checking real evidence.
 - If doctor reports Zvec hash mismatch, run closeout for the claimed changed files or run `agent_memory_zvec_index.py --scan --prune`; equal document counts alone do not prove fresh vectors.
+- If doctor reports `session_claim_hygiene`, preview with `memoryctl --actor human claims-expire --older-than-hours 24 --json`; add `--apply` only after confirming those sessions are no longer active. This changes the SQLite ownership ledger, not Markdown.
+- If doctor reports `memory_remote_backup`, inspect the private-vault diff and leak scan before pushing. A clean local Git baseline is not a remote backup.
+- If doctor reports `semantic_python_runtime`, recreate the private venv from the exact dependency lock with an available Python of the same supported minor version, then rerun the offline semantic probe.
