@@ -163,6 +163,7 @@ Only install global Codex hooks or a macOS LaunchAgent after the user has asked 
 - Keep the outer Stop hook timeout slightly above the closeout timeout. For a 300-second closeout, use at least 320 seconds outside.
 - Keep one global closeout lock, one Git baseline, one session-claim table, one audit scheduler, one SQLite database, and one Zvec index across both hosts.
 - Let `agent_memory_audit_autorun.py --min-interval-days 7` decide whether audit is due.
+- When the interval is due, autorun should run the content audit and then the read-only Doctor, persisting separate `latest-audit.json` and `latest-doctor.json` reports and notifying on either findings or infrastructure health drift.
 - The weekly LaunchAgent must not use `--force`; otherwise closeout, hook, and launchd can run duplicate audits inside the same seven-day window.
 - Merge the memory command into existing `~/.codex/hooks.json`; never overwrite unrelated hooks.
 - After changing a hook command, tell the user Codex may ask them to review/trust the new hook hash.
